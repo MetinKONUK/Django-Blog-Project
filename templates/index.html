@@ -1,0 +1,16 @@
+{% extends "layout.html"%}
+{% block body %}
+    <div
+    class="alert alert-warning" role="alert"
+    >
+        <h3>WELCOME TO MY BLOG</h3>
+        <p>You can improve your skills via reading my articles in this blog</p>
+    </div>
+    <p>
+        {% if request.user.is_authenticated %}
+            Logged In as {{request.user.username}}...
+        {% else %}
+            No current user
+        {% endif %}
+    </p>
+{% endblock body %}

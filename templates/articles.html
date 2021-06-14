@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h3>Articles</h3>
+    <hr/>
+    <div class="row">
+        <div class="col-md-10 offset-md-3">
+            <div class="col-lg-8">
+            <form>
+                {% csrf_token %}
+                <input type="text" name="keyword" class="input-sm" placeholder="Search"/>
+                <button type="submit" class="btn btn-md btn-danger">Search</button>
+            </form>
+            </div>
+        </div>
+    </div>
+    {% if articles %}
+        {% for article in articles %}       
+<div class="row" style="margin-bottom:20%;">
+    <div class="col-md-9 offset-md-3">
+        <div class="col-lg-9">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <a href="{% url 'article:detail' article.id %}" style="text-decoration: none;">
+                        <h3 class="fw-bolder mb-1">{{article.title}}</h3>
+                    </a>
+                    <p>by {{article.author}}</p>
+                    <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{article.created_date}}</div>
+                    <!-- Post categories-->
+                </header>
+                <!-- Preview image figure-->
+                {% if article.article_image %}
+                <a href="{% url 'article:detail' article.id %}">
+                <img width="100%" height="auto" src="{{article.article_image.url}}" />
+                </a>
+                {% endif %}
+                <!-- Post content-->
+                <section class="mb-5">
+                {{article.content|truncatewords_html:30|safe}}
+                <a style="float:right;border-radius: 0px;" href="{% url 'article:detail' article.id %}" class="btn btn-success">
+                Continue Reading
+                </a>
+                </section>
+            </article>
+        </div>  
+    </div>
+</div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-danger">
+            No article
+        </div>
+    {% endif %}
+{% endblock body %}

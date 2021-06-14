@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-md-9 offset-md-3">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h3 class="fw-bolder mb-1">{{article.title}}</h3>
+                    <p>by {{article.author}}</p>
+                    <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{article.created_date}}</div>
+                    <!-- Post categories-->
+                </header>
+                <!-- Preview image figure-->
+                {% if article.article_image %}
+                <img width="100%" height="auto" src="{{article.article_image.url}}" />
+                {% endif %}
+                <!-- Post content-->
+                <section class="mb-5">
+                {{article.content|safe}}
+                </section>
+            </article>
+            {% if comments %}
+                <h3><b>COMMENTS</b></h3>
+                <hr/>
+                {% for comment in comments %}
+                    <div class="d-flex">
+                        <div class="ms-3">
+                            <div class="fw-bold">{{comment.comment_author}}-{{comment.comment_date}}</div>
+                            {{comment.comment_content}}
+                        </div>
+                    </div>
+                    <hr/>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-danger">
+                    There are no comment for this article.
+                </div>
+            {% endif %}
+
+            <!-- Comments section-->
+            <section class="mb-5">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <!-- Comment form-->
+                        <form class="mb-4" method="POST" action="{% url 'article:comment' article.id %}">
+                        {% csrf_token %}
+                        <textarea name="comment_area"class="form-control" rows="10" placeholder="Join the discussion and leave a comment!"></textarea>
+                        <button style="width:100%" class="btn btn-primary"> LEAVE A COMMENT </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>  
+    </div>
+</div>
+{% endblock body %}
